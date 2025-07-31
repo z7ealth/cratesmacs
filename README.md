@@ -4,6 +4,10 @@
 
 ---
 
+## Requirements
+
+- Requires cargo-outdated subcommand: https://github.com/kbknapp/cargo-outdated
+
 ## Features
 
 - Runs `cargo outdated` automatically on opening `Cargo.toml`.
