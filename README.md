@@ -1,15 +1,15 @@
-# hexmacs
+# cratesmacs
 
-`hexmacs` is a small Emacs package that automatically checks for outdated Hex dependencies in your Elixir project's `mix.exs` file. It runs `mix hex.outdated` when you open `mix.exs` and annotates each dependency line with a green check mark (✓) if up to date or a red cross (✗) if an update is available.
+`cratesmacs` is a small Emacs package that automatically checks for outdated Rust dependencies in your project's `Cargo.toml` file. It runs `cargo outdated` when you open `Cargo.toml` and annotates each dependency line with a green check mark (✓) if up to date, or a red ✗ if an update is available.
 
 ---
 
 ## Features
 
-- Runs `mix hex.outdated` automatically on opening `mix.exs`.
+- Runs `cargo outdated` automatically on opening `Cargo.toml`.
 - Inline annotation of dependencies showing their update status.
-- Simple and lightweight with no external dependencies.
-- Works in any Elixir project with a `mix.exs` file.
+- Simple and lightweight with no Emacs package dependencies.
+- Works in any Rust project with a `Cargo.toml` file.
 
 ---
 
@@ -24,8 +24,9 @@ Clone or download this repository and add it to your Emacs `load-path`.
 Add the following to your Emacs config (`init.el`, `config.el`, or equivalent):
 
 ```elisp
-;; hexmacs
-(use-package hexmacs
-  :load-path "/my/cloned/path/hexmacs"
+;; cratesmacs
+(use-package cratesmacs
+  :load-path "/my/cloned/path/cratesmacs"
   :config
-  (hexmacs-mode 1))
+  (cratesmacs-mode 1))
+```
