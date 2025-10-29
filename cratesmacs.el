@@ -66,28 +66,27 @@
       (cratesmacs--clear-overlays)
       (let ((outdated (ignore-errors (cratesmacs--collect-outdated)))
             (in-deps-section nil))
-        (when outdated
-          (while (not (eobp))
-            (let ((line (thing-at-point 'line t)))
-              ;; Toggle section parsing
-              (cond
-               ((string-match-p "^[ \t]*\\[\\(dev-\\)?dependencies\\]" line)
-                (setq in-deps-section t))
-               ((string-match-p "^[ \t]*\\[.*\\]" line) ; any other section
-                (setq in-deps-section nil)))
+        (while (not (eobp))
+          (let ((line (thing-at-point 'line t)))
+            ;; Toggle section parsing
+            (cond
+             ((string-match-p "^[ \t]*\\[\\(dev-\\)?dependencies\\]" line)
+              (setq in-deps-section t))
+             ((string-match-p "^[ \t]*\\[.*\\]" line) ; any other section
+              (setq in-deps-section nil)))
 
-              ;; If we're in the deps section, try matching deps
-              (when (and in-deps-section
-                         (string-match "^\\([a-zA-Z0-9_-]+\\)[ \t]*=" line))
-                (let* ((dep (match-string 1 line))
-                       (start (line-end-position))
-                       (icon (if (member dep outdated)
-                                 (propertize " ✗" 'face 'error)
-                               (propertize " ✓" 'face 'success)))
-                       (ov (make-overlay start start)))
-                  (overlay-put ov 'after-string icon)
-                  (push ov cratesmacs--overlays))))
-            (forward-line 1)))))))
+            ;; If we're in the deps section, try matching deps
+            (when (and in-deps-section
+                       (string-match "^\\([a-zA-Z0-9_-]+\\)[ \t]*=" line))
+              (let* ((dep (match-string 1 line))
+                     (start (line-end-position))
+                     (icon (if (and outdated (member dep outdated))
+                               (propertize " ✗" 'face 'error)
+                             (propertize " ✓" 'face 'success)))
+                     (ov (make-overlay start start)))
+                (overlay-put ov 'after-string icon)
+                (push ov cratesmacs--overlays))))
+          (forward-line 1))))))
 
 (defun cratesmacs--maybe-run ()
   "Safely run outdated check if the buffer is ready and is Cargo.toml."
